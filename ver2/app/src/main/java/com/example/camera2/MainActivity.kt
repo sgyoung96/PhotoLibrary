@@ -9,12 +9,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
-import kotlinx.android.synthetic.main.activity_main.*
+//import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.io.IOException
 import java.net.URI
@@ -30,13 +32,21 @@ class MainActivity : AppCompatActivity() {
     val REQUEST_IMAGE_CAPTURE = 1
     lateinit var currentPhotoPath: String
 
+    lateinit var btnPicture: Button
+    lateinit var imgPicture: ImageView
+
+//    private lateinit var binding: ActivityHomeBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        btnPicture = findViewById(R.id.btn_picture)
+        imgPicture = findViewById(R.id.img_picture)
+
         settingPermission()
 
-        btn_picture.setOnClickListener {
+        btnPicture.setOnClickListener {
             startCapture()
         }
     }
@@ -102,11 +112,11 @@ class MainActivity : AppCompatActivity() {
             val file = File(currentPhotoPath)
             if (Build.VERSION.SDK_INT < 28) {
                 val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, Uri.fromFile(file))
-                img_picture.setImageBitmap(bitmap)
+                imgPicture.setImageBitmap(bitmap)
             } else {
                 val decode = ImageDecoder.createSource(this.contentResolver, Uri.fromFile(file))
                 val bitmap = ImageDecoder.decodeBitmap(decode)
-                img_picture.setImageBitmap(bitmap)
+                imgPicture.setImageBitmap(bitmap)
             }
         }
     }
